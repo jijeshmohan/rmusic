@@ -19,40 +19,25 @@ func NewPlayer() *MPDPlayer {
 	return &player
 }
 
-func (p *MPDPlayer) AddSong(path string) {
-
-	err := p.client.Add(path)
-	if err != nil {
-		log.Println("Unable to add songs")
-	}
-}
-func (p *MPDPlayer) Play() {
-	err := p.client.Play(-1)
-	if err != nil {
-		log.Println("Unable to Play songs")
-	}
-}
-func (p *MPDPlayer) Next() {
-	err := p.client.Next()
-	if err != nil {
-		log.Println("Unable to Play Next song")
-	}
+func (p *MPDPlayer) AddSong(path string) error {
+	return p.client.Add(path)
 }
 
-func (p *MPDPlayer) Prev() {
-	err := p.client.Previous()
-	if err != nil {
-		log.Println("Unable to Play Previous song")
-	}
+func (p *MPDPlayer) Play() error {
+	return p.client.Play(-1)
+}
+func (p *MPDPlayer) Next() error {
+	return p.client.Next()
 }
 
-func (p *MPDPlayer) Stop() {
-	err := p.client.Stop()
-	if err != nil {
-		log.Println("Unable to Stop playing")
-	}
+func (p *MPDPlayer) Prev() error {
+	return p.client.Previous()
 }
 
-func (p *MPDPlayer) Close() {
-	p.client.Close()
+func (p *MPDPlayer) Stop() error {
+	return p.client.Stop()
+}
+
+func (p *MPDPlayer) Close() error {
+	return p.client.Close()
 }

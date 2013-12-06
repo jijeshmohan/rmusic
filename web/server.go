@@ -36,18 +36,27 @@ func (s RaspiMusicServer) registerRoutes() {
 }
 
 func (s RaspiMusicServer) Stop() (int, string) {
-	s.player.Stop()
+	err := s.player.Stop()
+	if err != nil {
+		return 500, fmt.Sprintf("%v\n", err)
+	}
 	return 200, "Stopped"
 }
 
 func (s RaspiMusicServer) Next() (int, string) {
-	s.player.Next()
+	err := s.player.Next()
+	if err != nil {
+		return 500, fmt.Sprintf("%v\n", err)
+	}
 	return 200, "Next Song"
 }
 
 func (s RaspiMusicServer) Prev() (int, string) {
-	s.player.Prev()
-	return 200, "Next Song"
+	err := s.player.Prev()
+	if err != nil {
+		return 500, fmt.Sprintf("%v\n", err)
+	}
+	return 200, "Prev Song"
 }
 
 func (s RaspiMusicServer) PlaySong(params martini.Params) (int, string) {

@@ -31,8 +31,6 @@ func (collection SongsCollection) SongPath(id string) (string, error) {
 	return "", errors.New("unable to file song")
 }
 
-// chiku
-
 func allMP3Files(path string) []Song {
 	dir, err := os.Open(path)
 	checkErr(err)
@@ -42,12 +40,12 @@ func allMP3Files(path string) []Song {
 
 	songs := make([]Song, 0)
 	if fi.IsDir() {
-		fis, err := dir.Readdir(-1) // -1 means return all the FileInfos
+		fis, err := dir.Readdir(-1)
 		checkErr(err)
 		for _, fileinfo := range fis {
 			if !fileinfo.IsDir() && filepath.Ext(fileinfo.Name()) == ".mp3" {
 				title := removeExtension(fileinfo.Name())
-				fileSha := getSha(fileinfo.Name())
+				fileSha := getSHA(fileinfo.Name())
 				songs = append(songs, Song{Title: title, Id: fileSha, path: fileinfo.Name()})
 			}
 		}
@@ -60,7 +58,7 @@ func checkErr(err error) {
 		log.Fatalf("Error %v", err)
 	}
 }
-func getSha(filename string) string {
+func getSHA(filename string) string {
 	h := sha1.New()
 	h.Write([]byte(filename))
 	bs := h.Sum(nil)
