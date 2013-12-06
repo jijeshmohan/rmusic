@@ -1,4 +1,4 @@
-package server
+package web
 
 import (
 	"encoding/json"
@@ -26,48 +26,48 @@ func NewRaspiMusicServer(port int, songsPath string) *RaspiMusicServer {
 	return &server
 }
 
-func (server RaspiMusicServer) registerRoutes() {
-	server.m.Get("/songs", server.getSongsList)
-	server.m.Post("/songs/:id/play", server.PlaySong)
-	server.m.Post("/stop", server.Stop)
-	server.m.Post("/next", server.Next)
-	server.m.Post("/prev", server.Prev)
+func (s RaspiMusicServer) registerRoutes() {
+	s.m.Get("/songs", s.getSongsList)
+	s.m.Post("/songs/:id/play", s.PlaySong)
+	s.m.Post("/stop", s.Stop)
+	s.m.Post("/next", s.Next)
+	s.m.Post("/prev", s.Prev)
 
 }
 
-func (server RaspiMusicServer) Stop() (int, string) {
-	server.player.Stop()
+func (s RaspiMusicServer) Stop() (int, string) {
+	s.player.Stop()
 	return 200, "Stopped"
 }
 
-func (server RaspiMusicServer) Next() (int, string) {
-	server.player.Next()
+func (s RaspiMusicServer) Next() (int, string) {
+	s.player.Next()
 	return 200, "Next Song"
 }
 
-func (server RaspiMusicServer) Prev() (int, string) {
-	server.player.Prev()
+func (s RaspiMusicServer) Prev() (int, string) {
+	s.player.Prev()
 	return 200, "Next Song"
 }
 
-func (server RaspiMusicServer) PlaySong(params martini.Params) (int, string) {
+func (s RaspiMusicServer) PlaySong(params martini.Params) (int, string) {
 	id := params["id"]
-	path, err := server.songsCollection.SongPath(id)
+	path, err := s.songsCollection.SongPath(id)
 	if err != nil {
 		return 500, fmt.Sprintf("%v\n", err)
 	}
-	server.player.AddSong(path)
-	server.player.Play()
+	s.player.AddSong(path)
+	s.player.Play()
 	return 200, "PLAYING.. " + path
 }
 
-func (server RaspiMusicServer) getSongsList() (int, string) {
-	songs, err := json.Marshal(server.songsCollection.All())
+func (s RaspiMusicServer) getSongsList() (int, string) {
+	songs, err := json.Marshal(s.songsCollection.All())
 	if err != nil {
 		return 500, fmt.Sprintf("%v\n", err)
 	}
 	return 200, string(songs)
 }
-func (server RaspiMusicServer) Run() {
-	http.ListenAndServe(server.port, server.m)
+func (s RaspiMusicServer) Run() {
+	http.ListenAndServe(s.port, s.m)
 }

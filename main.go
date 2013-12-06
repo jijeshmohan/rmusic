@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
-	"raspimusic/server"
+	"raspimusic/web"
 )
 
 var (
@@ -17,7 +17,8 @@ func main() {
 	log.Println("Starting Raspimusic")
 	flag.Parse()
 
-	server.NewRaspiMusicServer(*port, *songsPath).Run()
+	server := web.NewRaspiMusicServer(*port, *songsPath)
+	server.Run()
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt, os.Kill)
