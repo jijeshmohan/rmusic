@@ -5,6 +5,8 @@ import (
 	"github.com/codegangsta/martini"
 	"log"
 	"net/http"
+	"raspimusic/song"
+	"strings"
 )
 
 type RaspiMusicServer struct {
@@ -22,12 +24,12 @@ func NewRaspiMusicServer(port int) *RaspiMusicServer {
 }
 
 func (server RaspiMusicServer) registerRoutes() {
-	server.m.Get("/list", server.getSongsList)
+	server.m.Get("/songs", server.getSongsList)
 }
 
 func (server RaspiMusicServer) getSongsList() string {
 	log.Println("Songs list")
-	return "Songs lists"
+	return strings.Join(song.All(), ", ")
 }
 
 func (server RaspiMusicServer) Run() {
