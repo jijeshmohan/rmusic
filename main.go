@@ -10,7 +10,7 @@ import (
 
 var (
 	port      = flag.Int("port", 8080, "port of the webserver")
-	songsPath = flag.String("path", "~/Music", "Music files path")
+	songsPath = flag.String("path", "/Users/jijeshm/Music/", "Music files path")
 )
 
 func main() {
