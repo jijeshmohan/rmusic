@@ -32,6 +32,19 @@ func (p *MPDPlayer) Play() {
 		log.Println("Unable to Play songs")
 	}
 }
+func (p *MPDPlayer) Next() {
+	err := p.client.Next()
+	if err != nil {
+		log.Println("Unable to Play Next song")
+	}
+}
+
+func (p *MPDPlayer) Prev() {
+	err := p.client.Previous()
+	if err != nil {
+		log.Println("Unable to Play Previous song")
+	}
+}
 
 func (p *MPDPlayer) Stop() {
 	err := p.client.Stop()

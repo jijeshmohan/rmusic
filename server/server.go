@@ -30,12 +30,24 @@ func (server RaspiMusicServer) registerRoutes() {
 	server.m.Get("/songs", server.getSongsList)
 	server.m.Post("/songs/:id/play", server.PlaySong)
 	server.m.Post("/stop", server.Stop)
+	server.m.Post("/next", server.Next)
+	server.m.Post("/prev", server.Prev)
 
 }
 
 func (server RaspiMusicServer) Stop() (int, string) {
 	server.player.Stop()
 	return 200, "Stopped"
+}
+
+func (server RaspiMusicServer) Next() (int, string) {
+	server.player.Next()
+	return 200, "Next Song"
+}
+
+func (server RaspiMusicServer) Prev() (int, string) {
+	server.player.Prev()
+	return 200, "Next Song"
 }
 
 func (server RaspiMusicServer) PlaySong(params martini.Params) (int, string) {
