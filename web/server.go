@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/codegangsta/martini"
+	"github.com/jijeshmohan/raspimusic/player"
+	"github.com/jijeshmohan/raspimusic/song"
 	"net/http"
-	"raspimusic/player"
-	"raspimusic/song"
 )
 
 type RaspiMusicServer struct {
@@ -68,6 +68,7 @@ func (s RaspiMusicServer) getSongsList() (int, string) {
 	}
 	return 200, string(songs)
 }
+
 func (s RaspiMusicServer) Run() {
 	http.ListenAndServe(s.port, s.m)
 }

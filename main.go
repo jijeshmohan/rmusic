@@ -2,10 +2,10 @@ package main
 
 import (
 	"flag"
+	"github.com/jijeshmohan/raspimusic/web"
 	"log"
 	"os"
 	"os/signal"
-	"raspimusic/web"
 )
 
 var (
