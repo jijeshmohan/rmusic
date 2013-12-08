@@ -15,6 +15,7 @@ func NewPlayer() *MPDPlayer {
 	if err != nil {
 		log.Fatalln(err)
 	}
+	conn.Update("")
 	player.client = conn
 	return &player
 }
