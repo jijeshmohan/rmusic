@@ -25,12 +25,12 @@ func NewRaspiMusicServer(port int, songsPath string) *RaspiMusicServer {
 
 func (s RaspiMusicServer) registerRoutes() {
 	s.m.Get("/songs", s.getSongsList)
-	s.m.Post("/songs/:id/play", s.PlaySong)
-	s.m.Post("/stop", s.Stop)
-	s.m.Post("/next", s.Next)
-	s.m.Post("/prev", s.Prev)
+	s.m.Post("/songs/:id/play", s.playSong)
+	s.m.Post("/stop", s.stop)
+	s.m.Post("/next", s.next)
+	s.m.Post("/prev", s.prev)
 }
-func (s RaspiMusicServer) Stop() (int, string) {
+func (s RaspiMusicServer) stop() (int, string) {
 	err := s.player.Stop()
 	if err != nil {
 		return 500, fmt.Sprintf("%v\n", err)
@@ -38,7 +38,7 @@ func (s RaspiMusicServer) Stop() (int, string) {
 	return 200, "Stopped"
 }
 
-func (s RaspiMusicServer) Next() (int, string) {
+func (s RaspiMusicServer) next() (int, string) {
 	err := s.player.Next()
 	if err != nil {
 		return 500, fmt.Sprintf("%v\n", err)
@@ -46,7 +46,7 @@ func (s RaspiMusicServer) Next() (int, string) {
 	return 200, "Next Song"
 }
 
-func (s RaspiMusicServer) Prev() (int, string) {
+func (s RaspiMusicServer) prev() (int, string) {
 	err := s.player.Prev()
 	if err != nil {
 		return 500, fmt.Sprintf("%v\n", err)
@@ -54,7 +54,7 @@ func (s RaspiMusicServer) Prev() (int, string) {
 	return 200, "Prev Song"
 }
 
-func (s RaspiMusicServer) PlaySong(params martini.Params) (int, string) {
+func (s RaspiMusicServer) playSong(params martini.Params) (int, string) {
 	id := params["id"]
 	path, err := s.player.AddSong(id)
 	if err != nil {
