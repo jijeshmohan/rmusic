@@ -25,11 +25,12 @@ func NewRaspiMusicServer(port int, songsPath string) *RaspiMusicServer {
 
 func (s RaspiMusicServer) registerRoutes() {
 	s.m.Get("/songs", s.getSongsList)
-	s.m.Post("/songs/:id/play", s.playSong)
+	s.m.Post("/songs/play", s.playSong)
 	s.m.Post("/stop", s.stop)
 	s.m.Post("/next", s.next)
 	s.m.Post("/prev", s.prev)
 }
+
 func (s RaspiMusicServer) stop() (int, string) {
 	err := s.player.Stop()
 	if err != nil {
@@ -54,9 +55,8 @@ func (s RaspiMusicServer) prev() (int, string) {
 	return 200, "Prev Song"
 }
 
-func (s RaspiMusicServer) playSong(params martini.Params) (int, string) {
-	id := params["id"]
-	path, err := s.player.AddSong(id)
+func (s RaspiMusicServer) playSong(w http.ResponseWriter, r *http.Request) (int, string) {
+	path, err := s.player.AddSong(r.FormValue("path"))
 	if err != nil {
 		return 500, fmt.Sprintf("%v\n", err)
 	}
@@ -65,7 +65,14 @@ func (s RaspiMusicServer) playSong(params martini.Params) (int, string) {
 }
 
 func (s RaspiMusicServer) getSongsList() (int, string) {
-	songs, _ := json.Marshal(s.player.Songs())
+	attr, err := s.player.Songs()
+	if err != nil {
+		return 500, fmt.Sprintf("%v\n", err)
+	}
+	songs, err := json.Marshal(attr)
+	if err != nil {
+		return 500, fmt.Sprintf("%v\n", err)
+	}
 	return 200, string(songs)
 }
 

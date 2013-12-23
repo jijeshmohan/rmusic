@@ -2,15 +2,11 @@ package player
 
 import (
 	"code.google.com/p/gompd/mpd"
-	"crypto/sha1"
-	"errors"
-	"fmt"
 	"log"
 )
 
 type MPDPlayer struct {
-	client   *mpd.Client
-	songsMap map[string]string
+	client *mpd.Client
 }
 
 func NewPlayer() *MPDPlayer {
@@ -22,32 +18,14 @@ func NewPlayer() *MPDPlayer {
 	conn.Update("")
 	conn.Clear()
 	player.client = conn
-	player.songsMap = make(map[string]string)
-	player.collectSongs()
 	return &player
 }
 
-func getSHA(filename string) string {
-	h := sha1.New()
-	h.Write([]byte(filename))
-	bs := h.Sum(nil)
-	return fmt.Sprintf("%x", bs)
-}
-
-func (p *MPDPlayer) collectSongs() {
-	songs, _ := p.client.GetFiles()
-	for _, path := range songs {
-		p.songsMap[getSHA(path)] = path
-	}
-}
-
-func (p *MPDPlayer) AddSong(id string) (string, error) {
-	path, present := p.songsMap[id]
-	if !present {
-		return "", errors.New("Unable to find song")
-	}
+func (p *MPDPlayer) AddSong(path string) (string, error) {
 	err := p.client.Add(path)
-	return path, err
+	data, _ := p.client.Find(path)
+	log.Printf("%v", data)
+	return "Album", err
 }
 
 func (p *MPDPlayer) Play() error {
@@ -70,6 +48,6 @@ func (p *MPDPlayer) Close() error {
 	return p.client.Close()
 }
 
-func (p *MPDPlayer) Songs() map[string]string {
-	return p.songsMap
+func (p *MPDPlayer) Songs() ([]mpd.Attrs, error) {
+	return p.client.ListAllInfo("/")
 }
