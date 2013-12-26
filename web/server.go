@@ -14,7 +14,7 @@ type RaspiMusicServer struct {
 	player *player.MPDPlayer
 }
 
-func NewRaspiMusicServer(port int, songsPath string) *RaspiMusicServer {
+func NewRaspiMusicServer(port int) *RaspiMusicServer {
 	var server RaspiMusicServer
 	server.player = player.NewPlayer()
 	server.m = martini.Classic()

@@ -9,15 +9,14 @@ import (
 )
 
 var (
-	port      = flag.Int("port", 8080, "port of the webserver")
-	songsPath = flag.String("path", "/home/pi/musics", "Music files path")
+	port = flag.Int("port", 8080, "port of the webserver")
 )
 
 func main() {
 	log.Println("Starting Raspimusic")
 	flag.Parse()
 
-	server := web.NewRaspiMusicServer(*port, *songsPath)
+	server := web.NewRaspiMusicServer(*port)
 	server.Run()
 
 	quit := make(chan os.Signal, 1)
