@@ -21,11 +21,13 @@ func NewPlayer() *MPDPlayer {
 	return &player
 }
 
+func (p *MPDPlayer) PlaylistInfo() ([]mpd.Attrs, error) {
+	return p.client.PlaylistInfo(-1, -1)
+}
+
 func (p *MPDPlayer) AddSong(path string) (string, error) {
 	err := p.client.Add(path)
-	data, _ := p.client.Find(path)
-	log.Printf("%v", data)
-	return "Album", err
+	return path, err
 }
 
 func (p *MPDPlayer) Play() error {

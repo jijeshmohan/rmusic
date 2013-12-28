@@ -29,6 +29,19 @@ func (s RaspiMusicServer) registerRoutes() {
 	s.m.Post("/stop", s.stop)
 	s.m.Post("/next", s.next)
 	s.m.Post("/prev", s.prev)
+	s.m.Get("/playlist", s.playlist)
+}
+
+func (s RaspiMusicServer) playlist() (int, string) {
+	attr, err := s.player.PlaylistInfo()
+	if err != nil {
+		return 500, fmt.Sprintf("%v\n", err)
+	}
+	songs, err := json.Marshal(attr)
+	if err != nil {
+		return 500, fmt.Sprintf("%v\n", err)
+	}
+	return 200, string(songs)
 }
 
 func (s RaspiMusicServer) stop() (int, string) {
