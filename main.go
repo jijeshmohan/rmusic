@@ -17,9 +17,11 @@ func main() {
 	flag.Parse()
 
 	server := web.NewRaspiMusicServer(*port)
-	server.Run()
+	go server.Run()
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt, os.Kill)
 	<-quit
+	log.Println("Exiting raspimusic")
+	server.Quit()
 }

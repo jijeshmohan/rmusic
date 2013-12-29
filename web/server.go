@@ -92,3 +92,7 @@ func (s RaspiMusicServer) getSongsList() (int, string) {
 func (s RaspiMusicServer) Run() {
 	http.ListenAndServe(s.port, s.m)
 }
+
+func (s RaspiMusicServer) Quit() {
+	s.stop()
+}
