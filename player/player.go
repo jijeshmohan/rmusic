@@ -21,6 +21,11 @@ func NewPlayer() *MPDPlayer {
 	return &player
 }
 
+func (p *MPDPlayer) IsPlaying() bool {
+	state, _ := p.client.Status()
+	return state["state"] == "play"
+}
+
 func (p *MPDPlayer) PlaylistInfo() ([]mpd.Attrs, error) {
 	return p.client.PlaylistInfo(-1, -1)
 }
@@ -32,6 +37,10 @@ func (p *MPDPlayer) AddSong(path string) (string, error) {
 
 func (p *MPDPlayer) Play() error {
 	return p.client.Play(-1)
+}
+
+func (p *MPDPlayer) ClearPlayList() error {
+	return p.client.Clear()
 }
 
 func (p *MPDPlayer) Next() error {
