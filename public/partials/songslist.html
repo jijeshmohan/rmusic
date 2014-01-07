@@ -1,0 +1,19 @@
+<div class="row">
+<button type="button" class="btn btn-default pull-right" ng-click="stop()">Stop</button>
+<br/>
+</div>
+<div class="row">
+<div class="songs list-group" >
+  <a ng-repeat="song in songs" class="list-group-item col-xs-12 col-md-12" ng-click="play(song)">
+	 <div class="row">
+	  <div class="col-xs-11 col-md-11">
+	  	<h5 class="glyphicon glyphicon-music"> {{song.Title}}</h5>
+	  	<small>
+	  	<p><span class="glyphicon glyphicon-book"> {{song.Album}}</span> &nbsp; <span class="glyphicon glyphicon-user"> {{song.Artist}}</span></p>
+	  	</small>
+	  </div>
+	  <div class="col-xs-1 col-md-1"><span class="glyphicon glyphicon-play pull-right" >&nbsp;</span></div>
+ 	</div>
+  </a>
+</div>
+</div>
